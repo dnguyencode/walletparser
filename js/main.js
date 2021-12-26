@@ -21,6 +21,8 @@ const cbParseBtn = document.getElementById('cbParseBtn');
 const downloadBtn = document.getElementById('downloadBtn');
 const tablinks = document.querySelectorAll('.output__tablinks');
 const outputContent = document.querySelector(".output__content");
+const closeBtns = document.getElementsByClassName('close');
+// const closeBtns = document.querySelectorAll('.close'); // doesn't work on app
 let format = "etherscan";
 
 if (addressesFromLocalStorage) {
@@ -52,7 +54,7 @@ function render(addresses) {
     let listItems = "";
     for (let i = 0; i < addresses.length; i++) {
         listItems += `
-            <li id="${addresses[i].value}">
+            <li class="${addresses[i].value}">
                 <a href="https://etherscan.io/address/${addresses[i].value}" target="_blank">
                     <span class="result">${addresses[i].value.slice(0, 5)}...${addresses[i].value.slice(-4)}</span>
                 </a>
@@ -62,6 +64,12 @@ function render(addresses) {
         `
     }
     outputContent.innerHTML = listItems;
+    for (let i = 0; i < closeBtns.length; i++) {
+        console.log(closeBtns[i].parentElement.className)
+        closeBtns[i].addEventListener('click', () => {
+            removeAddress(closeBtns[i].parentElement.className)
+        })
+    }
 }
 
 function addAddress(address) {
@@ -75,3 +83,16 @@ function addAddress(address) {
     render(myAddresses);
     inputNote.value = "";
 }
+
+function removeAddress(address) {
+    let toRemove = address;
+    myAddresses = myAddresses.filter(function (address) {
+        return address.value !== toRemove
+    })
+    localStorage.setItem('myAddresses', JSON.stringify(myAddresses))
+    render(myAddresses);
+}
+
+downloadBtn.addEventListener('click', () => {
+    console.log(myAddresses);
+})
