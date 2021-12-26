@@ -41,7 +41,7 @@ function render(addresses) {
     for (let i = 0; i < addresses.length; i++) {
         listItems += `
             <li id="${addresses[i].value}">
-                <a href="https://etherscan.io/address/${addresses[i].value}">
+                <a href="https://etherscan.io/address/${addresses[i].value}" target="_blank">
                     <span class="result">${addresses[i].value.slice(0, 5)}...${addresses[i].value.slice(-4)}</span>
                 </a>
                 <span class="note">${addresses[i].note}</span>
