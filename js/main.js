@@ -2,7 +2,7 @@ import getClipboardUsingPaste from '/js/utils.js';
 
 let myAddresses = [
     {
-        value: "0xa6aBFe72665F22D53aB8eE867Bd2AB9331A973C0",
+        value: "0x9c5083dd4838E120Dbeac44C052179692Aa5dAC5",
         note: "Tetra Node"
     },
     {
@@ -10,10 +10,33 @@ let myAddresses = [
         note: "Uniswap V2 Router"
     },
     {
-        value: "0x0000000000000000000000000000000000000000",
+        value: "0x5DD596C901987A2b28C38A9C1DfBf86fFFc15d77",
+        note: "Sifu"
+    },
+    {
+        value: "0x000000000000000000000000000000000000dEaD",
         note: "Blackhole"
     }
 ];
+
+let formats = [
+    {
+        name: 'zapperfi',
+        prefix: 'https://zapper.fi/account/',
+        suffix: ''
+    },
+    {
+        name: 'etherscan',
+        prefix: 'https://etherscan.io/address/',
+        suffix: ''
+    },
+    {
+        name: 'debank',
+        prefix: 'https://debank.com/profile/',
+        suffix: ''
+    }
+]
+
 const addressesFromLocalStorage = JSON.parse(localStorage.getItem("myAddresses"));
 const inputNote = document.querySelector('.input__note');
 const urlParseBtn = document.getElementById('urlParseBtn');
@@ -23,7 +46,7 @@ const tablinks = document.querySelectorAll('.output__tablinks');
 const outputContent = document.querySelector(".output__content");
 const closeBtns = document.getElementsByClassName('close');
 // const closeBtns = document.querySelectorAll('.close'); // doesn't work on app
-let format = "etherscan";
+let currentFormat = 0;
 
 if (addressesFromLocalStorage) {
     myAddresses = addressesFromLocalStorage;
@@ -53,9 +76,10 @@ cbParseBtn.addEventListener('click', () => {
 function render(addresses) {
     let listItems = "";
     for (let i = 0; i < addresses.length; i++) {
+        let { prefix, suffix } = formats[currentFormat];
         listItems += `
             <li class="${addresses[i].value}">
-                <a href="https://etherscan.io/address/${addresses[i].value}" target="_blank">
+                <a href="${prefix}${addresses[i].value}${suffix}" target="_blank">
                     <span class="result">${addresses[i].value.slice(0, 5)}...${addresses[i].value.slice(-4)}</span>
                 </a>
                 <span class="note">${addresses[i].note}</span>
@@ -65,7 +89,6 @@ function render(addresses) {
     }
     outputContent.innerHTML = listItems;
     for (let i = 0; i < closeBtns.length; i++) {
-        console.log(closeBtns[i].parentElement.className)
         closeBtns[i].addEventListener('click', () => {
             removeAddress(closeBtns[i].parentElement.className)
         })
@@ -94,5 +117,23 @@ function removeAddress(address) {
 }
 
 downloadBtn.addEventListener('click', () => {
-    console.log(myAddresses);
+    changeFormat('zapperfi')
 })
+
+for (let i = 0; i < tablinks.length; i++) {
+    tablinks[i].addEventListener('click', () => {
+        changeFormat(tablinks[i].id)
+    })
+}
+
+function changeFormat(newFormatName) {
+    tablinks[currentFormat].classList.toggle('active');
+    for (let i = 0; i < formats.length; i++) {
+        let { name } = formats[i]
+        if (newFormatName === name) {
+            currentFormat = i;
+            render(myAddresses)
+            tablinks[i].classList.toggle('active');
+        }
+    }
+}

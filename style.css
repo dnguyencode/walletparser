@@ -47,7 +47,7 @@ html {
 }
 .output__tab {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
 }
 .output__tablinks{
     border: none;
