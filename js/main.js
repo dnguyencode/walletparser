@@ -1,42 +1,8 @@
 import getClipboardUsingPaste from '/js/utils.js';
+import { formats } from '/js/formats.js';
+import { defaultAddresses } from '/js/defaultAddresses.js';
 
-let myAddresses = [
-    {
-        value: "0x9c5083dd4838E120Dbeac44C052179692Aa5dAC5",
-        note: "Tetra Node"
-    },
-    {
-        value: "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
-        note: "Uniswap V2 Router"
-    },
-    {
-        value: "0x5DD596C901987A2b28C38A9C1DfBf86fFFc15d77",
-        note: "Sifu"
-    },
-    {
-        value: "0x000000000000000000000000000000000000dEaD",
-        note: "Blackhole"
-    }
-];
-
-let formats = [
-    {
-        name: 'zapperfi',
-        prefix: 'https://zapper.fi/account/',
-        suffix: ''
-    },
-    {
-        name: 'etherscan',
-        prefix: 'https://etherscan.io/address/',
-        suffix: ''
-    },
-    {
-        name: 'debank',
-        prefix: 'https://debank.com/profile/',
-        suffix: ''
-    }
-]
-
+let myAddresses = [];
 const addressesFromLocalStorage = JSON.parse(localStorage.getItem("myAddresses"));
 const inputNote = document.querySelector('.input__note');
 const urlParseBtn = document.getElementById('urlParseBtn');
@@ -48,11 +14,12 @@ const closeBtns = document.getElementsByClassName('close');
 // const closeBtns = document.querySelectorAll('.close'); // doesn't work on app
 let currentFormat = 0;
 
-if (addressesFromLocalStorage) {
+if (addressesFromLocalStorage.length > 0) {
     myAddresses = addressesFromLocalStorage;
-    render(myAddresses)
+} else {
+    myAddresses = defaultAddresses
 }
-
+render(myAddresses);
 
 cbParseBtn.addEventListener('click', () => {
     let parsedAddress = stringtoAddress(
