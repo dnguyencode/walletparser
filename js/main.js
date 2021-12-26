@@ -23,17 +23,23 @@ const outputContent = document.querySelector(".output__content");
 let format = "etherscan";
 
 const stringtoAddress = (str) => {
-    const addressRegex = /0x[0-9a-f]{40}/i;
-    let result = str.match(addressRegex)
-    return result[0];
+    let result = '';
+    try {
+        const addressRegex = /0x[0-9a-f]{40}/i;
+        result = str.match(addressRegex)[0]
+    } catch (err) { }
+    return result;
 };
 
 cbParseBtn.addEventListener('click', () => {
-    addAddress(
-        stringtoAddress(
-            getClipboardUsingPaste()
-        )
+    let parsedAddress = stringtoAddress(
+        getClipboardUsingPaste()
     )
+    if (parsedAddress) {
+        addAddress(
+            parsedAddress
+        )
+    }
 })
 
 function render(addresses) {
