@@ -1,6 +1,6 @@
 import getClipboardUsingPaste from '/js/utils.js';
 import { formats } from '/js/formats.js';
-import { defaultAddresses } from '/js/defaultAddresses.js';
+import defaultAddresses from '/js/defaultAddresses.js';
 
 let myAddresses = [];
 const addressesFromLocalStorage = JSON.parse(localStorage.getItem("myAddresses"));
