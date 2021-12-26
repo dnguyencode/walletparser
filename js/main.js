@@ -14,6 +14,7 @@ let myAddresses = [
         note: "Blackhole"
     }
 ];
+const addressesFromLocalStorage = JSON.parse(localStorage.getItem("myAddresses"));
 const inputNote = document.querySelector('.input__note');
 const urlParseBtn = document.getElementById('urlParseBtn');
 const cbParseBtn = document.getElementById('cbParseBtn');
@@ -21,6 +22,11 @@ const downloadBtn = document.getElementById('downloadBtn');
 const tablinks = document.querySelectorAll('.output__tablinks');
 const outputContent = document.querySelector(".output__content");
 let format = "etherscan";
+
+if (addressesFromLocalStorage) {
+    myAddresses = addressesFromLocalStorage;
+    render(myAddresses)
+}
 
 const stringtoAddress = (str) => {
     let result = '';
@@ -65,6 +71,7 @@ function addAddress(address) {
             note: inputNote.value
         }
     );
+    localStorage.setItem('myAddresses', JSON.stringify(myAddresses))
     render(myAddresses);
     inputNote.value = "";
 }
