@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="input">
+        <input type="text" class="input__note" placeholder="Note" />
+        <div class="input__controls">
+          <button class="btn" id="urlParseBtn">URL</button>
+          <button class="btn" id="cbParseBtn">CLIPBOARD</button>
+          <button class="btn" id="downloadBtn">DOWNLOAD</button>
+        </div>
+      </div>
+      <div class="output">
+        <div class="output__tab">
+          <button
+            class="output__tablinks active"
+            onclick="changeFormat(event, 'Etherscan')"
+            id="etherscanFormat"
+          >
+            Etherscan
+          </button>
+          <button
+            class="output__tablinks"
+            onclick="changeFormat(event, 'Zapper')"
+            id="zapperFormat"
+          >
+            Zapper
+          </button>
+          <button
+            class="output__tablinks"
+            onclick="changeFormat(event, 'Plain')"
+            id="plainFormat"
+          >
+            Plain
+          </button>
+        </div>
+        <ul class="output__content">
+          <li>
+            <span class="result">
+              <a href="#"> 0x0000...0000 </a>
+            </span>
+            <span class="note">Good Stuff</span>
+            <span class="close">X</span>
+          </li>
+          <li>
+            <span class="result">0x0000...0000</span>
+            <span class="note">Tetra Node</span>
+            <span class="close">X</span>
+          </li>
+          <li>
+            <span class="result">0x0000...0000</span>
+            <span class="note">Secret Wallet</span>
+            <span class="close">X</span>
+          </li>
+          <li>
+            <span class="result">0x0000...0000</span>
+            <span class="note">Goldman Sachs</span>
+            <span class="close">X</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <script type="module" src="/js/main.js"></script>
+  </body>
+</html>
