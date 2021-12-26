@@ -53,14 +53,6 @@ if (addressesFromLocalStorage) {
     render(myAddresses)
 }
 
-const stringtoAddress = (str) => {
-    let result = '';
-    try {
-        const addressRegex = /0x[0-9a-f]{40}/i;
-        result = str.match(addressRegex)[0]
-    } catch (err) { }
-    return result;
-};
 
 cbParseBtn.addEventListener('click', () => {
     let parsedAddress = stringtoAddress(
@@ -73,18 +65,24 @@ cbParseBtn.addEventListener('click', () => {
     }
 })
 
+urlParseBtn.addEventListener('click', () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        addAddress(stringtoAddress(tabs[0].url))
+    })
+})
+
 function render(addresses) {
     let listItems = "";
     for (let i = 0; i < addresses.length; i++) {
         let { prefix, suffix } = formats[currentFormat];
         listItems += `
-            <li class="${addresses[i].value}">
-                <a href="${prefix}${addresses[i].value}${suffix}" target="_blank">
-                    <span class="result">${addresses[i].value.slice(0, 5)}...${addresses[i].value.slice(-4)}</span>
-                </a>
-                <span class="note">${addresses[i].note}</span>
-                <span class="close">X</span>
-            </li>
+        <li class="${addresses[i].value}">
+        <a href="${prefix}${addresses[i].value}${suffix}" target="_blank">
+        <span class="result">${addresses[i].value.slice(0, 5)}...${addresses[i].value.slice(-4)}</span>
+        </a>
+        <span class="note">${addresses[i].note}</span>
+        <span class="close">X</span>
+        </li>
         `
     }
     outputContent.innerHTML = listItems;
@@ -137,3 +135,11 @@ function changeFormat(newFormatName) {
         }
     }
 }
+const stringtoAddress = (str) => {
+    let result = '';
+    try {
+        const addressRegex = /0x[0-9a-f]{40}/i;
+        result = str.match(addressRegex)[0]
+    } catch (err) { }
+    return result;
+};
