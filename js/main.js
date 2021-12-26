@@ -41,7 +41,7 @@ const addressesFromLocalStorage = JSON.parse(localStorage.getItem("myAddresses")
 const inputNote = document.querySelector('.input__note');
 const urlParseBtn = document.getElementById('urlParseBtn');
 const cbParseBtn = document.getElementById('cbParseBtn');
-const downloadBtn = document.getElementById('downloadBtn');
+const exportBtn = document.getElementById('exportBtn');
 const tablinks = document.querySelectorAll('.output__tablinks');
 const outputContent = document.querySelector(".output__content");
 const closeBtns = document.getElementsByClassName('close');
@@ -66,9 +66,13 @@ cbParseBtn.addEventListener('click', () => {
 })
 
 urlParseBtn.addEventListener('click', () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         addAddress(stringtoAddress(tabs[0].url))
     })
+})
+
+exportBtn.addEventListener('click', () => {
+    exportStorage()
 })
 
 function render(addresses) {
@@ -114,9 +118,6 @@ function removeAddress(address) {
     render(myAddresses);
 }
 
-downloadBtn.addEventListener('click', () => {
-    changeFormat('zapperfi')
-})
 
 for (let i = 0; i < tablinks.length; i++) {
     tablinks[i].addEventListener('click', () => {
@@ -143,3 +144,20 @@ const stringtoAddress = (str) => {
     } catch (err) { }
     return result;
 };
+
+function exportStorage() {
+    let result = JSON.parse(localStorage.getItem("myAddresses"));
+    exportToJsonFile(result);
+}
+
+function exportToJsonFile(jsonData) {
+    let dataStr = JSON.stringify(jsonData);
+    let dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
+    let exportFileDefaultName = 'myTrackedAddresses.json';
+
+    let linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+}
