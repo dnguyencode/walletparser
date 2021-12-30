@@ -14,7 +14,7 @@ const closeBtns = document.getElementsByClassName('close');
 // const closeBtns = document.querySelectorAll('.close'); // doesn't work on app
 let currentFormat = 0;
 
-if (addressesFromLocalStorage.length > 0) {
+if (addressesFromLocalStorage) {
     myAddresses = addressesFromLocalStorage;
 } else {
     myAddresses = defaultAddresses
